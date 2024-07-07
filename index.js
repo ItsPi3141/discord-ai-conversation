@@ -1,7 +1,7 @@
 require("./server.js");
 
 const uniqueId = Math.random().toString(36).slice(2);
-const delay = 8000;
+let delay = 8000;
 
 function sendWebhook(url, msg) {
 	return new Promise((resolve) => {
@@ -40,7 +40,15 @@ function getAiResponse(user, msg) {
 			})
 				.then((res) => res.json())
 				.then((json) => {
-					resolve(json.response);
+					if (json.message) {
+						resolve("...");
+						delay = 20000;
+						setTimeout(() => {
+							delay = 8000;
+						}, 60000);
+					} else {
+						resolve(json.response);
+					}
 				});
 		} catch (err) {
 			console.log(err);
