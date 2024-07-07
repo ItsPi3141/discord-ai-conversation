@@ -1,6 +1,7 @@
 require("./server.js");
 
 const uniqueId = Math.random().toString(36).slice(2);
+const delay = 8000;
 
 function sendWebhook(url, msg) {
 	return new Promise((resolve) => {
@@ -14,7 +15,8 @@ function sendWebhook(url, msg) {
 					content: msg,
 				}),
 			}).then(() => resolve());
-		} catch {
+		} catch (err) {
+			console.log(err);
 			resolve();
 		}
 	});
@@ -37,8 +39,11 @@ function getAiResponse(user, msg) {
 				method: "POST",
 			})
 				.then((res) => res.json())
-				.then((json) => resolve(json.response));
-		} catch {
+				.then((json) => {
+					resolve(json.response);
+				});
+		} catch (err) {
+			console.log(err);
 			resolve("...");
 		}
 	});
@@ -51,13 +56,15 @@ function bot1(reply) {
 				.then(() => {
 					setTimeout(() => {
 						bot2(res);
-					}, 2000);
+					}, delay);
 				})
-				.catch(() => {
+				.catch((err) => {
+					console.log(err);
 					bot2("...");
 				});
 		})
-		.catch(() => {
+		.catch((err) => {
+			console.log(err);
 			bot2("...");
 		});
 }
@@ -69,13 +76,15 @@ function bot2(reply) {
 				.then(() => {
 					setTimeout(() => {
 						bot1(res);
-					}, 2000);
+					}, delay);
 				})
-				.catch(() => {
+				.catch((err) => {
+					console.log(err);
 					bot1("...");
 				});
 		})
-		.catch(() => {
+		.catch((err) => {
+			console.log(err);
 			bot1("...");
 		});
 }
