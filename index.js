@@ -1,7 +1,11 @@
 require("./server.js");
 
-const uniqueId = Math.random().toString(36).slice(2);
+let uniqueId = Math.random().toString(36).slice(2);
 let delay = 8000;
+
+function reset() {
+	uniqueId = Math.random().toString(36).slice(2);
+}
 
 function sendWebhook(url, msg) {
 	return new Promise((resolve) => {
@@ -98,3 +102,7 @@ function bot2(reply) {
 }
 
 bot1("hello");
+
+module.exports = {
+	reset,
+};
