@@ -1,4 +1,6 @@
-require("./server.js");
+const express = require("express");
+const app = express();
+const port = 3000;
 
 let uniqueId = Math.random().toString(36).slice(2);
 let delay = 8000;
@@ -6,6 +8,17 @@ let delay = 8000;
 function reset() {
 	uniqueId = Math.random().toString(36).slice(2);
 }
+
+app.get("/", (req, res) => {
+	res.send("OK");
+});
+app.get("/reset", (req, res) => {
+	reset();
+	res.send("OK");
+});
+app.listen(port, () => {
+	console.log(`Server is up and running on port ${port}`);
+});
 
 function sendWebhook(url, msg) {
 	return new Promise((resolve) => {
